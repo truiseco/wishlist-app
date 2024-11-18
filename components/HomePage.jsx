@@ -8,32 +8,53 @@ export default function HomePage() {
   const { user, login, logout } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="max-w-6xl mx-auto text-center space-y-8">
-        <header className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Secret Santa Wishlists</h1>
-          <button
-            onClick={user ? logout : login}
-            className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 transition-colors"
-          >
-            {user ? 'Sign Out' : 'Sign in with Google'}
-          </button>
-        </header>
+    <div className="min-h-screen p-4">
+  <div className="max-w-6xl mx-auto text-center space-y-8">
+    <header className="flex justify-between items-center mb-8 bg-white/80 backdrop-blur-sm rounded-xl shadow-soft p-6">
+      <h1 className="text-4xl font-semibold text-holiday-pine">
+        Secret Santa 
+        <span className="text-holiday-red">Wishlist</span>
+      </h1>
+      <button
+        onClick={user ? logout : login}
+        className="px-6 py-3 font-medium text-white bg-holiday-green rounded-lg hover:bg-holiday-pine transition-colors duration-300 shadow-sm"
+      >
+        {user ? 'Sign Out' : 'Sign in with Google'}
+      </button>
+    </header>
 
-        {user ? (
-          <div className="space-y-4">
-            <h2 className="text-xl font-bold">Welcome, {user.displayName}!</h2>
-            <Link to="/wishlist" className="block px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
-              View/Edit My Wishlist
-            </Link>
-            <Link to="/wishlists" className="block px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
-              View All Wishlists
-            </Link>
-          </div>
-        ) : (
-          <h2 className="text-xl">Please sign in to view and edit wishlists</h2>
-        )}
+    {user ? (
+      <div className="space-y-6">
+        <h2 className="text-2xl font-medium text-holiday-pine">
+          Welcome, {user.displayName}!
+        </h2>
+        <div className="grid gap-4 md:grid-cols-2">
+          <Link 
+            to="/wishlist" 
+            className="p-8 bg-white/80 backdrop-blur-sm rounded-xl shadow-card hover:shadow-lg transition-all duration-300 group"
+          >
+            <h3 className="text-xl font-medium text-holiday-pine mb-2">Your Wishlist</h3>
+            <p className="text-gray-600 group-hover:text-holiday-green transition-colors duration-300">
+              View and edit your gift wishlist
+            </p>
+          </Link>
+          <Link 
+            to="/wishlists" 
+            className="p-8 bg-white/80 backdrop-blur-sm rounded-xl shadow-card hover:shadow-lg transition-all duration-300 group"
+          >
+            <h3 className="text-xl font-medium text-holiday-pine mb-2">All Wishlists</h3>
+            <p className="text-gray-600 group-hover:text-holiday-green transition-colors duration-300">
+              Browse everyone's wishlists
+            </p>
+          </Link>
+        </div>
       </div>
-    </div>
+    ) : (
+      <div className="p-12 bg-white/80 backdrop-blur-sm rounded-xl shadow-card">
+        <h2 className="text-2xl text-holiday-pine">Please sign in to view and edit wishlists</h2>
+      </div>
+    )}
+  </div>
+</div>
   );
 }

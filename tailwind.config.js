@@ -8,10 +8,31 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        holiday: {
+          red: '#DE354C',
+          green: '#3C8D2F',
+          gold: '#FFB800',
+          cream: '#FFF3E6',
+          pine: '#183A37'
+        }
       },
+      fontFamily: {
+        sans: ['Outfit', 'sans-serif'],
+      },
+      boxShadow: {
+        'soft': '0 2px 15px rgba(0, 0, 0, 0.08)',
+        'card': '0 4px 20px rgba(0, 0, 0, 0.06)',
+      },
+      animation: {
+        'snow': 'snow 10s linear infinite',
+      },
+      keyframes: {
+        snow: {
+          '0%': { transform: 'translateY(-10px)' },
+          '100%': { transform: 'translateY(100vh)' },
+        }
+      }
     },
   },
   plugins: [],
-};
+}

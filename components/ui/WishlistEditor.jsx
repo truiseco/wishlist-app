@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { Save, Check } from 'lucide-react';
 import { wishlistService } from '@/services/wishlistService';
-import { Save, Check, AlertCircle } from 'lucide-react';
 
 export default function WishlistEditor({ wishlist, onUpdate }) {
   const [items, setItems] = useState(wishlist?.items || []);
@@ -13,7 +13,6 @@ export default function WishlistEditor({ wishlist, onUpdate }) {
   const [hasChanges, setHasChanges] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  
 
   function debounce(func, wait) {
     let timeout;
@@ -39,7 +38,7 @@ export default function WishlistEditor({ wishlist, onUpdate }) {
         setShowSuccess(true);
         setTimeout(() => {
           setShowSuccess(false);
-          setTimeout(() => setIsVisible(false), 750); // Wait for fade out to complete
+          setTimeout(() => setIsVisible(false), 750);
         }, 1500);
       } catch (err) {
         setError('Failed to save changes. Please try again.');
@@ -49,7 +48,7 @@ export default function WishlistEditor({ wishlist, onUpdate }) {
     }, 1000),
     [onUpdate]
   );
-  
+
   useEffect(() => {
     if (items !== wishlist?.items && hasChanges) {
       debouncedSave(items);
@@ -59,7 +58,6 @@ export default function WishlistEditor({ wishlist, onUpdate }) {
   const handleAddItem = (e) => {
     e.preventDefault();
     if (!newItem.name) return;
-  
     setItems([...items, { ...newItem, id: Date.now() }]);
     setNewItem({ name: '', link: '', price: '', notes: '' });
     setHasChanges(true);
@@ -84,72 +82,8 @@ export default function WishlistEditor({ wishlist, onUpdate }) {
     setHasChanges(true);
   };
 
-  if (editingItem) {
-    return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg p-6 max-w-md w-full">
-          <h3 className="text-lg font-bold mb-4">Edit Item</h3>
-          <form onSubmit={handleUpdateItem} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Name</label>
-              <input
-                type="text"
-                value={editingItem.name}
-                onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })}
-                className="w-full p-2 border rounded mt-1"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Link (optional)</label>
-              <input
-                type="text"
-                value={editingItem.link || ''}
-                onChange={(e) => setEditingItem({ ...editingItem, link: e.target.value })}
-                className="w-full p-2 border rounded mt-1"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Price (optional)</label>
-              <input
-                type="text"
-                value={editingItem.price || ''}
-                onChange={(e) => setEditingItem({ ...editingItem, price: e.target.value })}
-                className="w-full p-2 border rounded mt-1"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Notes (optional)</label>
-              <textarea
-                value={editingItem.notes || ''}
-                onChange={(e) => setEditingItem({ ...editingItem, notes: e.target.value })}
-                className="w-full p-2 border rounded mt-1"
-                rows={3}
-              />
-            </div>
-            <div className="flex justify-end space-x-3 mt-4">
-              <button
-                type="button"
-                onClick={() => setEditingItem(null)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              >
-                Save Changes
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {isVisible && (
         <div 
           className={`fixed top-8 left-1/2 transform -translate-x-1/2 z-50 transition-opacity duration-750
@@ -159,87 +93,147 @@ export default function WishlistEditor({ wishlist, onUpdate }) {
             {saving ? (
               <>
                 <span className="text-gray-600">Saving changes...</span>
-                <Save size={14} className="animate-spin text-blue-500" />
+                <Save size={14} className="animate-spin text-holiday-green" />
               </>
             ) : (
               <>
                 <span className="text-gray-600">Changes saved...</span>
-                <Check size={14} className="text-green-500" />
+                <Check size={14} className="text-holiday-green" />
               </>
             )}
           </div>
         </div>
       )}
-      {error && (
-        <div className="fixed top-8 left-1/2 transform -translate-x-1/2 z-50">
-          <div className="bg-white rounded-lg shadow-lg px-4 py-2 text-red-600 flex items-center gap-2">
-            <AlertCircle size={14} />
-            {error}
+
+      {editingItem && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl p-8 max-w-md w-full shadow-lg">
+            <h3 className="text-2xl font-semibold text-holiday-pine mb-6">Edit Item</h3>
+            <form onSubmit={handleUpdateItem} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-holiday-pine mb-1">Name</label>
+                <input
+                  type="text"
+                  value={editingItem.name}
+                  onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })}
+                  className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-holiday-green/20 focus:border-holiday-green outline-none transition-all duration-300"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-holiday-pine mb-1">Link (optional)</label>
+                <input
+                  type="text"
+                  value={editingItem.link || ''}
+                  onChange={(e) => setEditingItem({ ...editingItem, link: e.target.value })}
+                  className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-holiday-green/20 focus:border-holiday-green outline-none transition-all duration-300"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-holiday-pine mb-1">Price (optional)</label>
+                <input
+                  type="text"
+                  value={editingItem.price || ''}
+                  onChange={(e) => setEditingItem({ ...editingItem, price: e.target.value })}
+                  className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-holiday-green/20 focus:border-holiday-green outline-none transition-all duration-300"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-holiday-pine mb-1">Notes (optional)</label>
+                <textarea
+                  value={editingItem.notes || ''}
+                  onChange={(e) => setEditingItem({ ...editingItem, notes: e.target.value })}
+                  className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-holiday-green/20 focus:border-holiday-green outline-none transition-all duration-300"
+                  rows={3}
+                />
+              </div>
+              <div className="flex justify-end space-x-3 mt-6">
+                <button
+                  type="button"
+                  onClick={() => setEditingItem(null)}
+                  className="px-6 py-2 text-gray-600 hover:text-gray-800 transition-colors duration-300"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2 bg-holiday-green text-white rounded-lg hover:bg-holiday-pine transition-colors duration-300"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
-      <form onSubmit={handleAddItem} className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
+
+      <form className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-card">
+        <div className="grid grid-cols-2 gap-4 mb-4">
           <input
             type="text"
             placeholder="Item name"
             value={newItem.name}
             onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
-            className="p-2 border rounded"
+            className="p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-holiday-green/20 focus:border-holiday-green outline-none transition-all duration-300"
           />
           <input
             type="text"
             placeholder="Link (optional)"
             value={newItem.link}
             onChange={(e) => setNewItem({ ...newItem, link: e.target.value })}
-            className="p-2 border rounded"
+            className="p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-holiday-green/20 focus:border-holiday-green outline-none transition-all duration-300"
           />
           <input
             type="text"
             placeholder="Price (optional)"
             value={newItem.price}
             onChange={(e) => setNewItem({ ...newItem, price: e.target.value })}
-            className="p-2 border rounded"
+            className="p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-holiday-green/20 focus:border-holiday-green outline-none transition-all duration-300"
           />
           <input
             type="text"
             placeholder="Notes (optional)"
             value={newItem.notes}
             onChange={(e) => setNewItem({ ...newItem, notes: e.target.value })}
-            className="p-2 border rounded"
+            className="p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-holiday-green/20 focus:border-holiday-green outline-none transition-all duration-300"
           />
         </div>
         <button 
           type="submit"
-          className="w-full p-2 text-white bg-green-500 rounded hover:bg-green-600"
+          className="w-full p-3 text-white bg-holiday-green rounded-lg hover:bg-holiday-pine transition-colors duration-300 font-medium"
         >
           Add Item
         </button>
       </form>
 
-      <div className="space-y-2">
+      <div className="space-y-4">
         {items.map((item) => (
-          <div key={item.id} className="flex items-center justify-between p-4 bg-white rounded shadow">
+          <div key={item.id} className="flex items-center justify-between p-6 bg-white/80 backdrop-blur-sm rounded-xl shadow-card hover:shadow-lg transition-all duration-300">
             <div>
-              <h3 className="font-bold">{item.name}</h3>
+              <h3 className="font-medium text-holiday-pine">{item.name}</h3>
               {item.link && (
-                <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                <a 
+                  href={item.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-holiday-green hover:text-holiday-pine transition-colors duration-300"
+                >
                   View Item
                 </a>
               )}
-              {item.price && <p className="text-gray-600">Price: {item.price}</p>}
-              {item.notes && <p className="text-gray-500">{item.notes}</p>}
+              {item.price && <p className="text-gray-600 mt-1">Price: {item.price}</p>}
+              {item.notes && <p className="text-gray-500 mt-1">{item.notes}</p>}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               <button
                 onClick={() => handleEditItem(item)}
-                className="p-2 text-blue-500 hover:text-blue-700"
+                className="p-2 text-holiday-green hover:text-holiday-pine transition-colors duration-300"
               >
                 Edit
               </button>
               <button
                 onClick={() => handleRemoveItem(item.id)}
-                className="p-2 text-red-500 hover:text-red-700"
+                className="p-2 text-holiday-red hover:text-red-700 transition-colors duration-300"
               >
                 Remove
               </button>
