@@ -4,8 +4,10 @@ const nextConfig = {
     images: {
         unoptimized: true,
     },
-    basePath: "/wishlist-app",
-    assetPrefix: "/wishlist-app/",
+    ...(process.env.NODE_ENV === 'production' ? {
+        basePath: "/wishlist-app",
+        assetPrefix: "/wishlist-app/",
+    } : {})
 };
 
 export default nextConfig;
