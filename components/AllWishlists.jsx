@@ -42,7 +42,7 @@ export default function AllWishlists() {
           {wishlists.map((wishlist) => (
             <div key={wishlist.id} className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-card hover:shadow-lg transition-all duration-300">
               <h3 className="text-xl font-medium text-holiday-red mb-4">
-                {wishlist.userName}'s Wishlist
+                {wishlist.userName}&apos;s Wishlist
               </h3>
               <ul className="space-y-3">
                 {wishlist.items.map((item) => (

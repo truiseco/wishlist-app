@@ -44,7 +44,7 @@ export default function HomePage() {
           >
             <h3 className="text-xl font-medium text-holiday-pine mb-2">All Wishlists</h3>
             <p className="text-gray-600 group-hover:text-holiday-green transition-colors duration-300">
-              Browse everyone's wishlists
+              Browse everyone&apos;s wishlists
             </p>
           </Link>
         </div>
