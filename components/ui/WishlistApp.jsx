@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { wishlistService } from '@/services/wishlistService';
 import WishlistEditor from './WishlistEditor';
 import { Link } from 'react-router-dom';
+import WishlistDetails from '../WishlistDetails';
 
 export default function WishlistApp() {
   const { user } = useAuth();
@@ -53,6 +54,15 @@ export default function WishlistApp() {
     }
   };
 
+  const handleUpdateDetails = async (details) => {
+    try {
+      await wishlistService.updateWishlistDetails(user.uid, details);
+      await loadWishlist();
+    } catch (error) {
+      console.error('Error updating details:', error);
+    }
+  };
+
   if (!user) {
     return (
       <div className="text-center p-8">
@@ -89,6 +99,10 @@ export default function WishlistApp() {
 
   return (
     <div className="space-y-8">
+      <WishlistDetails 
+        wishlist={wishlist}
+        onUpdate={handleUpdateDetails}
+      />
       <WishlistEditor 
         wishlist={wishlist}
         onUpdate={handleUpdateWishlist}

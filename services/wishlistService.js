@@ -19,7 +19,14 @@ export const wishlistService = {
       updatedAt: new Date().toISOString(),
       userEmail: userData.email,
       userName: userData.displayName,
-      userId: userId
+      userId: userId,
+      deliveryAddress: {
+        street: '',
+        city: '',
+        state: '',
+        zipCode: '',
+        specialInstructions: ''
+      }
     });
   },
 
@@ -44,6 +51,15 @@ export const wishlistService = {
     const docRef = doc(db, 'wishlists', userId);
     await setDoc(docRef, {
       ...wishlistData,
+      updatedAt: new Date().toISOString(),
+    }, { merge: true });
+  },
+
+  // Update wishlist details
+  async updateWishlistDetails(userId, details) {
+    const docRef = doc(db, 'wishlists', userId);
+    await setDoc(docRef, {
+      ...details,
       updatedAt: new Date().toISOString(),
     }, { merge: true });
   }
