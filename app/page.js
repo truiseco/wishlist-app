@@ -3,7 +3,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from '@/contexts/AuthContext';
 import HomePage from '@/components/HomePage';
-import WishlistApp from '@/components/ui/WishlistApp';
+import WishlistApp from '@/components/WishlistApp';
 import AllWishlists from '@/components/AllWishlists';
 
 export default function App() {

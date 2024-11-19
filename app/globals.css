@@ -5,8 +5,22 @@
 body {
   background: linear-gradient(to bottom right, #FFF3E6, #fff);
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
+/* Keyframes for staggered fade-in animation */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Snowfall effect */
 .snowfall {
   position: fixed;
   top: 0;
@@ -15,4 +29,52 @@ body {
   bottom: 0;
   pointer-events: none;
   z-index: 50;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Adding some fun hover effects for interactive elements */
+@layer components {
+  .holiday-button {
+    @apply relative overflow-hidden transition-all duration-300;
+  }
+  
+  .holiday-button::after {
+    @apply content-[''] absolute inset-0 bg-white/20 scale-x-0 transition-transform duration-300 origin-left;
+  }
+  
+  .holiday-button:hover::after {
+    @apply scale-x-100;
+  }
+}
+
+/* Subtle shine animation for cards */
+.shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shine 8s infinite;
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  20% { left: 100%; }
+  100% { left: 100%; }
 }
