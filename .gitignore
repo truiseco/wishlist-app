@@ -31,10 +31,51 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+.env*.local
 
 # vercel
 .vercel
+.vercel/
+.now/
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# TypeScript incremental compilation files
+*.tsbuildinfo
+
+# Firebase
+.firebase/
+*.log
+
+# Firebase config (if it contains sensitive info)
+firebase.json
+.firebaserc
+firebase-debug.log*
+
+# IDE/Editor specific
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS specific
+Thumbs.db
+
+# NextJS telemetry
+.next-telemetry
+
+# Temp files
+*.temp
+*.tmp
+
+# local dev tools
+convert.py
+*.sh
+
+# Cache
+.cache/
+
+# text files
+*.txt
