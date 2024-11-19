@@ -2,11 +2,30 @@
 
 import React from 'react';
 import { ChevronLeft } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-export default function PageHeader({ title, showBack = true }) {
+const TAGLINES = [
+  "Because spreadsheets are so yesterday",
+  "No permission requests needed",
+  "Easier than a Google Sheet™",
+  "For when DMs and spreadsheets just won't cut it",
+  "Get giftin', girlypop",
+  "For the useless men who 'don't want anything'",
+  "Because some of us need more than K-pop merch",
+  "No scavenger hunts required",
+  "Spreadsheet-free zone",
+  "Sorry Nat, spreadsheets can't do this",
+  "The upgraded spreadsheet experience",
+  "Where editing doesn't require permission",
+  "$10,000 price limit"
+];
+
+export default function PageHeader({ title, showBack = true, showTagline = false }) {
   const navigate = useNavigate();
+  
+  // Only calculate random tagline if we're showing it
+  const tagline = showTagline ? TAGLINES[Math.floor(Math.random() * TAGLINES.length)] : null;
 
   return (
     <div className="bg-white/80 backdrop-blur-sm shadow-soft mb-8 rounded-xl">
@@ -22,9 +41,16 @@ export default function PageHeader({ title, showBack = true }) {
                 <ChevronLeft size={24} />
               </button>
             )}
-            <h1 className="text-2xl font-semibold text-holiday-pine truncate">
-              {title}
-            </h1>
+            <div>
+              <h1 className="text-2xl font-semibold text-holiday-pine truncate">
+                {title}
+              </h1>
+              {showTagline && (
+                <p className="text-sm text-gray-600 mt-1">
+                  {tagline}
+                </p>
+              )}
+            </div>
           </div>
           
           <div className="flex items-center gap-2">
@@ -40,5 +66,6 @@ export default function PageHeader({ title, showBack = true }) {
 
 PageHeader.propTypes = {
   title: PropTypes.string.isRequired,
-  showBack: PropTypes.bool
+  showBack: PropTypes.bool,
+  showTagline: PropTypes.bool
 };

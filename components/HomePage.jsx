@@ -1,17 +1,36 @@
 "use client";
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import PageHeader from '@/components/PageHeader';
 import { Gift, List, Sparkles } from 'lucide-react';
+
+const TAGLINES = [
+  "Because spreadsheets are so yesterday",
+  "No permission requests needed",
+  "Easier than a Google Sheet™",
+  "For when DMs and spreadsheets just won't cut it",
+  "Get giftin', girlypop",
+  "For the useless men who 'don't want anything'",
+  "Because some of us need more than K-pop merch",
+  "No scavenger hunts required",
+  "Spreadsheet-free zone",
+  "Sorry Nat, spreadsheets can't do this",
+  "The upgraded spreadsheet experience",
+  "Where editing doesn't require permission",
+];
 
 export default function HomePage() {
   const { user, login, logout } = useAuth();
 
   return (
     <div className="min-h-screen">
-      <PageHeader title="Secret Santa" showBack={false} />
+      <PageHeader 
+        title="Santa's Helper" 
+        showBack={false}
+        showTagline={true} // Only show tagline on home page
+      />
       
       <div className="max-w-4xl mx-auto p-8">
         <div className="space-y-8">
@@ -22,7 +41,6 @@ export default function HomePage() {
                   Welcome, {user.displayName}! 
                   <span className="inline-block ml-2 animate-bounce">🎄</span>
                 </h2>
-                <p className="text-gray-600">Ready to spread some holiday cheer?</p>
               </div>
 
               <div className="grid gap-6 md:grid-cols-2">
@@ -57,7 +75,7 @@ export default function HomePage() {
                       <h3 className="text-xl font-medium text-holiday-pine">All Wishlists</h3>
                     </div>
                     <p className="text-gray-600 group-hover:text-holiday-green transition-colors duration-300">
-                      Browse everyone's wishlists
+                      Browse everyone&apos;s wishlists
                     </p>
                   </div>
                 </Link>

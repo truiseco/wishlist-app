@@ -63,7 +63,10 @@ export default function WishlistApp() {
   if (!user) {
     return (
       <div className="min-h-screen">
-        <PageHeader title="My Wishlist" />
+        <PageHeader 
+          title="My Wishlist" 
+          showTagline={true}
+        />
         <div className="max-w-4xl mx-auto p-8">
           <div className="text-center p-8 bg-white/80 backdrop-blur-sm rounded-xl shadow-card">
             <h2 className="text-xl text-holiday-pine">Please sign in to view and edit your wishlist</h2>
@@ -76,7 +79,10 @@ export default function WishlistApp() {
   if (loading) {
     return (
       <div className="min-h-screen">
-        <PageHeader title="My Wishlist" />
+        <PageHeader 
+          title="My Wishlist" 
+          showTagline={true}
+        />
         <div className="max-w-4xl mx-auto p-8">
           <div className="flex justify-center items-center p-8 bg-white/80 backdrop-blur-sm rounded-xl shadow-card">
             <div className="flex items-center gap-2">
@@ -93,7 +99,10 @@ export default function WishlistApp() {
   if (!wishlist) {
     return (
       <div className="min-h-screen">
-        <PageHeader title="My Wishlist" />
+        <PageHeader 
+          title="My Wishlist" 
+          showTagline={true}
+        />
         <div className="max-w-4xl mx-auto p-8">
           <div className="text-center space-y-4 p-8 bg-white/80 backdrop-blur-sm rounded-xl shadow-card">
             <h2 className="text-2xl font-bold text-holiday-pine">Welcome to Secret Santa!</h2>
@@ -112,7 +121,10 @@ export default function WishlistApp() {
 
   return (
     <div className="min-h-screen">
-      <PageHeader title="My Wishlist" />
+      <PageHeader 
+          title="My Wishlist" 
+          showTagline={true}
+        />
       <div className="max-w-4xl mx-auto p-8">
         <div className="space-y-8">
           <WishlistDetails 

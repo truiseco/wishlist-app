@@ -25,7 +25,10 @@ export default function AllWishlists() {
   if (loading) {
     return (
       <div className="min-h-screen">
-        <PageHeader title="Secret Santa Wishlists" />
+        <PageHeader 
+          title="Wishlists" 
+          showTagline={true}
+        />
         <div className="max-w-4xl mx-auto p-8">
           <div className="flex justify-center items-center p-8 bg-white/80 backdrop-blur-sm rounded-xl shadow-card">
             <div className="flex items-center gap-2">
@@ -41,7 +44,10 @@ export default function AllWishlists() {
 
   return (
     <div className="min-h-screen">
-      <PageHeader title="Secret Santa Wishlists" />
+      <PageHeader 
+          title="Wishlists" 
+          showTagline={true}
+        />
       <div className="max-w-4xl mx-auto p-8">
         {wishlists.length > 0 ? (
           <div className="space-y-6">
