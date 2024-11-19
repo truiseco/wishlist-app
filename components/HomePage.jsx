@@ -27,7 +27,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       <PageHeader 
-        title="Santa's Helper" 
+        title="Top Secret Santa" 
         showBack={false}
         showTagline={true} // Only show tagline on home page
       />
