@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';  // Add this import
 import { Save, Check } from 'lucide-react';
 
 export default function WishlistEditor({ wishlist, onUpdate }) {
@@ -34,25 +35,12 @@ export default function WishlistEditor({ wishlist, onUpdate }) {
     }
   }, [wishlist]);
 
-  function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
-  }
-
-  const debouncedSave = React.useCallback(
-    debounce(async (newItems) => {
+  const debouncedSave = useCallback((newItems) => {
+    const saveItems = async () => {
       try {
         setSaving(true);
         setIsVisible(true);
         setError(null);
-        // Convert array back to object format if needed
         await onUpdate(newItems);
         setHasChanges(false);
         setSaving(false);
@@ -66,9 +54,10 @@ export default function WishlistEditor({ wishlist, onUpdate }) {
         console.error('Save error:', err);
         setIsVisible(false);
       }
-    }, 1000),
-    [onUpdate]
-  );
+    };
+    const timeoutId = setTimeout(saveItems, 1000);
+    return () => clearTimeout(timeoutId);
+  }, [onUpdate]);
 
   useEffect(() => {
     if (hasChanges) {
@@ -272,3 +261,19 @@ export default function WishlistEditor({ wishlist, onUpdate }) {
     </div>
   );
 }
+
+WishlistEditor.propTypes = {
+  wishlist: PropTypes.shape({
+    items: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.object
+    ])
+  }),
+  onUpdate: PropTypes.func.isRequired
+};
+
+WishlistEditor.defaultProps = {
+  wishlist: {
+    items: []
+  }
+};

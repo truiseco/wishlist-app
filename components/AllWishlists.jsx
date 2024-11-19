@@ -18,7 +18,7 @@ export default function AllWishlists() {
       const data = await wishlistService.getAllWishlists();
       setWishlists(data);
     } catch (error) {
-      console.error('Error loading wishlists:', error);
+      console.error("Error loading wishlists:", error);
     } finally {
       setLoading(false);
     }
@@ -42,17 +42,17 @@ export default function AllWishlists() {
           {wishlists.map((wishlist) => (
             <div key={wishlist.id} className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-card hover:shadow-lg transition-all duration-300">
               <h3 className="text-xl font-medium text-holiday-red mb-4">
-                {wishlist.userName}&apos;s Wishlist
+                {`${wishlist.userName}'s Wishlist`}
               </h3>
               <ul className="space-y-3">
                 {wishlist.items.map((item) => (
                   <li key={item.id} className="group">
                     <div 
-                      onClick={() => item.link && window.open(item.link, '_blank')}
+                      onClick={() => item.link && window.open(item.link, "_blank")}
                       className={`flex items-center py-2 px-3 rounded-lg ${
                         item.link 
-                          ? 'cursor-pointer hover:bg-holiday-green/5 transition-colors duration-300' 
-                          : ''
+                          ? "cursor-pointer hover:bg-holiday-green/5 transition-colors duration-300" 
+                          : ""
                       }`}
                     >
                       <span className="text-holiday-pine">{item.name} {item.price && `(${item.price})`}</span>
@@ -83,10 +83,3 @@ export default function AllWishlists() {
     </div>
   );
 }
-
-
-
-
-
-
-

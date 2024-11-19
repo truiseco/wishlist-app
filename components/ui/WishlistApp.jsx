@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { wishlistService } from '@/services/wishlistService';
 import WishlistEditor from './WishlistEditor';
@@ -12,22 +12,18 @@ export default function WishlistApp() {
   const [wishlist, setWishlist] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (user) {
-      loadWishlist();
-    }
-  }, [user]);
-
-  const loadWishlist = async () => {
+  // Define loadWishlist directly as a memoized callback
+  const loadWishlist = useCallback(async () => {
+    if (!user) return;
     try {
       const data = await wishlistService.getWishlist(user.uid);
       setWishlist(data);
     } catch (error) {
-      console.error('Error loading wishlist:', error);
+      console.error("Error loading wishlist:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   const handleCreateWishlist = async () => {
     try {
@@ -37,7 +33,7 @@ export default function WishlistApp() {
       });
       await loadWishlist();
     } catch (error) {
-      console.error('Error creating wishlist:', error);
+      console.error("Error creating wishlist:", error);
     }
   };
 
@@ -50,7 +46,7 @@ export default function WishlistApp() {
       });
       await loadWishlist();
     } catch (error) {
-      console.error('Error updating wishlist:', error);
+      console.error("Error updating wishlist:", error);
     }
   };
 
@@ -59,9 +55,13 @@ export default function WishlistApp() {
       await wishlistService.updateWishlistDetails(user.uid, details);
       await loadWishlist();
     } catch (error) {
-      console.error('Error updating details:', error);
+      console.error("Error updating details:", error);
     }
   };
+
+  useEffect(() => {
+    loadWishlist();
+  }, [loadWishlist]);
 
   if (!user) {
     return (

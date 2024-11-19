@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';  // Add this import
 
 export default function WishlistDetails({ wishlist, onUpdate }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -153,3 +154,29 @@ export default function WishlistDetails({ wishlist, onUpdate }) {
     </div>
   );
 }
+
+WishlistDetails.propTypes = {
+  wishlist: PropTypes.shape({
+    deliveryAddress: PropTypes.shape({
+      street: PropTypes.string,
+      city: PropTypes.string,
+      state: PropTypes.string,
+      zipCode: PropTypes.string,
+      specialInstructions: PropTypes.string
+    })
+  }),
+  onUpdate: PropTypes.func.isRequired
+};
+
+// Add default props to handle cases where wishlist might be null
+WishlistDetails.defaultProps = {
+  wishlist: {
+    deliveryAddress: {
+      street: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      specialInstructions: ''
+    }
+  }
+};
