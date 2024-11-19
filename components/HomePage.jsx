@@ -108,7 +108,7 @@ export default function HomePage() {
                   Welcome to Secret Santa!
                 </h2>
                 <p className="text-gray-600 max-w-md mx-auto">
-                  Create your wishlist and spread holiday cheer with friends and family.
+                  Sign in to view others&apos; wishlists and create or edit your own.
                 </p>
                 <button
                   onClick={login}
