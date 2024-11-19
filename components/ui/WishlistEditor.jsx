@@ -2,10 +2,22 @@
 
 import React, { useState, useEffect } from 'react';
 import { Save, Check } from 'lucide-react';
-import { wishlistService } from '@/services/wishlistService';
 
 export default function WishlistEditor({ wishlist, onUpdate }) {
-  const [items, setItems] = useState(wishlist?.items || []);
+  // Convert items object to array if needed
+  const convertItemsToArray = (items) => {
+    if (!items) return [];
+    if (Array.isArray(items)) return items;
+    // If items is an object with numeric keys, convert to array
+    if (typeof items === 'object') {
+      return Object.keys(items)
+        .sort((a, b) => parseInt(a) - parseInt(b))
+        .map(key => items[key]);
+    }
+    return [];
+  };
+
+  const [items, setItems] = useState([]);
   const [newItem, setNewItem] = useState({ name: '', link: '', price: '', notes: '' });
   const [editingItem, setEditingItem] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -13,6 +25,14 @@ export default function WishlistEditor({ wishlist, onUpdate }) {
   const [hasChanges, setHasChanges] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+
+  // Initialize items from wishlist
+  useEffect(() => {
+    if (wishlist?.items) {
+      const initialItems = convertItemsToArray(wishlist.items);
+      setItems(initialItems);
+    }
+  }, [wishlist]);
 
   function debounce(func, wait) {
     let timeout;
@@ -32,6 +52,7 @@ export default function WishlistEditor({ wishlist, onUpdate }) {
         setSaving(true);
         setIsVisible(true);
         setError(null);
+        // Convert array back to object format if needed
         await onUpdate(newItems);
         setHasChanges(false);
         setSaving(false);
@@ -50,15 +71,21 @@ export default function WishlistEditor({ wishlist, onUpdate }) {
   );
 
   useEffect(() => {
-    if (items !== wishlist?.items && hasChanges) {
+    if (hasChanges) {
       debouncedSave(items);
     }
-  }, [items, wishlist?.items, debouncedSave, hasChanges]);
+  }, [items, debouncedSave, hasChanges]);
 
   const handleAddItem = (e) => {
     e.preventDefault();
     if (!newItem.name) return;
-    setItems([...items, { ...newItem, id: Date.now() }]);
+    
+    const newItemWithId = {
+      ...newItem,
+      id: Date.now().toString(),
+    };
+    
+    setItems(current => [...current, newItemWithId]);
     setNewItem({ name: '', link: '', price: '', notes: '' });
     setHasChanges(true);
   };
@@ -78,10 +105,11 @@ export default function WishlistEditor({ wishlist, onUpdate }) {
   };
 
   const handleRemoveItem = (itemId) => {
-    setItems(items.filter(item => item.id !== itemId));
+    setItems(current => current.filter(item => item.id !== itemId));
     setHasChanges(true);
   };
 
+  // Rest of your component remains the same...
   return (
     <div className="space-y-6">
       {isVisible && (
@@ -167,7 +195,7 @@ export default function WishlistEditor({ wishlist, onUpdate }) {
         </div>
       )}
 
-      <form className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-card">
+      <form onSubmit={handleAddItem} className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-card">
         <div className="grid grid-cols-2 gap-4 mb-4">
           <input
             type="text"

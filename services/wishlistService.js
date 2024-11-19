@@ -14,7 +14,7 @@ export const wishlistService = {
   async createWishlist(userId, userData) {
     const docRef = doc(db, 'wishlists', userId);
     await setDoc(docRef, {
-      items: [],
+      items: [], // Initialize as an empty array
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       userEmail: userData.email,
