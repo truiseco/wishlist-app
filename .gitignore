@@ -79,3 +79,6 @@ convert.py
 
 # text files
 *.txt
+
+# backups
+backup.git/
