@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { ExternalLink, Gift, Sparkles } from 'lucide-react';
+import { Gift, Sparkles } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 import { wishlistService } from '@/services/wishlistService';
 import PageHeader from './PageHeader';
+import CollapsibleWishlistCard from './CollapsibleWishlistCard';
 
 export default function AllWishlists() {
+  const { user } = useAuth();
   const [wishlists, setWishlists] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     loadAllWishlists();
@@ -13,10 +17,12 @@ export default function AllWishlists() {
 
   const loadAllWishlists = async () => {
     try {
+      setError(null);
       const data = await wishlistService.getAllWishlists();
       setWishlists(data);
     } catch (error) {
       console.error("Error loading wishlists:", error);
+      setError("Unable to load wishlists. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -26,7 +32,7 @@ export default function AllWishlists() {
     return (
       <div className="min-h-screen">
         <PageHeader 
-          title="Wishlists" 
+          title="Secret Santa Wishlists" 
           showTagline={true}
         />
         <div className="max-w-4xl mx-auto p-8">
@@ -42,77 +48,73 @@ export default function AllWishlists() {
     );
   }
 
+  if (error) {
+    return (
+      <div className="min-h-screen">
+        <PageHeader 
+          title="Secret Santa Wishlists" 
+          showTagline={true}
+        />
+        <div className="max-w-4xl mx-auto p-8">
+          <div className="text-center p-8 bg-white/80 backdrop-blur-sm rounded-xl shadow-card">
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-holiday-cream flex items-center justify-center">
+                <Gift className="w-6 h-6 text-holiday-red" />
+              </div>
+              <div>
+                <h2 className="text-xl font-medium text-holiday-pine mb-2">Oops!</h2>
+                <p className="text-gray-600">{error}</p>
+              </div>
+              <button
+                onClick={loadAllWishlists}
+                className="mt-4 px-6 py-2 bg-holiday-green text-white rounded-lg hover:bg-holiday-pine transition-colors duration-300"
+              >
+                Try Again
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen">
       <PageHeader 
-          title="Wishlists" 
-          showTagline={true}
-        />
+        title="Secret Santa Wishlists" 
+        showTagline={true}
+      />
       <div className="max-w-4xl mx-auto p-8">
         {wishlists.length > 0 ? (
-          <div className="space-y-6">
+          <div className="space-y-8">
             {wishlists.map((wishlist, index) => (
               <div 
-                key={wishlist.id} 
-                className="relative group bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-card hover:shadow-lg transition-all duration-300"
+                key={wishlist.id}
                 style={{
                   animation: `fadeSlideIn 0.5s ease-out ${index * 0.1}s both`
                 }}
               >
-                {/* Decorative elements */}
-                <div className="absolute -top-2 -right-2 transition-transform duration-300 group-hover:rotate-12">
-                  <Sparkles className="w-5 h-5 text-holiday-gold" />
-                </div>
-                <div className="absolute -bottom-2 -left-2 transition-transform duration-300 group-hover:-rotate-12">
-                  <Gift className="w-5 h-5 text-holiday-red" />
-                </div>
-
-                <h3 className="text-xl font-medium text-holiday-red mb-4 group-hover:text-holiday-pine transition-colors duration-300">
-                  {`${wishlist.userName}'s Wishlist`}
-                </h3>
-                
-                <ul className="space-y-3">
-                  {wishlist.items.map((item) => (
-                    <li key={item.id} className="group/item">
-                      <div 
-                        onClick={() => item.link && window.open(item.link, "_blank")}
-                        className={`flex items-center justify-between py-2 px-3 rounded-lg ${
-                          item.link 
-                            ? "cursor-pointer hover:bg-holiday-green/5 transition-all duration-300" 
-                            : ""
-                        }`}
-                      >
-                        <div className="space-y-1">
-                          <span className="text-holiday-pine font-medium">
-                            {item.name}
-                          </span>
-                          {item.price && (
-                            <p className="text-sm text-gray-600">
-                              {item.price}
-                            </p>
-                          )}
-                          {item.notes && (
-                            <p className="text-sm text-gray-500 italic">
-                              {item.notes}
-                            </p>
-                          )}
-                        </div>
-                        {item.link && (
-                          <ExternalLink 
-                            size={14} 
-                            className="opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 text-holiday-green"
-                          />
-                        )}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+                <CollapsibleWishlistCard 
+                  wishlist={wishlist}
+                  isOwnWishlist={user?.uid === wishlist.userId}
+                />
               </div>
             ))}
           </div>
         ) : (
           <div className="text-center py-12 bg-white/80 backdrop-blur-sm rounded-xl shadow-card">
-            <p className="text-gray-600">No wishlists found yet! Be the first to create one.</p>
+            <div className="flex flex-col items-center gap-4">
+              <div className="relative">
+                <div className="w-12 h-12 rounded-full bg-holiday-cream flex items-center justify-center">
+                  <Gift className="w-6 h-6 text-holiday-green" />
+                </div>
+                <Sparkles className="absolute -top-1 -right-1 w-4 h-4 text-holiday-gold" />
+              </div>
+              <div>
+                <h2 className="text-xl font-medium text-holiday-pine mb-2">No Wishlists Yet</h2>
+                <p className="text-gray-600">Be the first to create a wishlist!</p>
+              </div>
+            </div>
           </div>
         )}
       </div>

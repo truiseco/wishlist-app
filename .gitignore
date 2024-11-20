@@ -73,6 +73,7 @@ Thumbs.db
 # local dev tools
 convert.py
 *.sh
+ProjectUpdate/
 
 # Cache
 .cache/
