@@ -4,12 +4,14 @@ service cloud.firestore {
   match /databases/{database}/documents {
     // Match any document in the 'wishlists' collection
     match /wishlists/{wishlistId} {
-      // Allow read for all authenticated users
+      // Allow read for authenticated users, but only authorized wishlists are returned in queries
       allow read: if request.auth != null;
-
-      // Allow write (both create and update) only if user is authenticated 
-      // and the document ID matches their user ID
-      allow write: if request.auth != null && request.auth.uid == wishlistId;
+      
+      // Allow write only if user is authenticated and the document ID matches their user ID
+      // Also prevent unauthorized users from modifying their 'authorized' status
+      allow write: if request.auth != null && 
+                  request.auth.uid == wishlistId &&
+                  (!request.resource.data.diff(resource.data).affectedKeys().hasAll(['authorized']));
     }
   }
 }
