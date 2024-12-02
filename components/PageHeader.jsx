@@ -18,7 +18,8 @@ const TAGLINES = [
   "Sorry Nat, spreadsheets can't do this",
   "The upgraded spreadsheet experience",
   "Where editing doesn't require permission",
-  "$10,000 price limit"
+  "$10,000 hard limit",
+  "$100 soft limit"
 ];
 
 export default function PageHeader({ title, showBack = true, showTagline = false }) {
